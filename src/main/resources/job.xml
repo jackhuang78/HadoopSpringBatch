@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:b="http://www.springframework.org/schema/batch" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <import resource="context.xml"/>
+    
+    <b:job id="job">
+		<b:step id="step1" next="step2">
+			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
+				<bean parent="shellTasklet">
+					<property name="command" value="printenv" />
+				</bean>
+			</b:tasklet>
+		</b:step>
+		
+		<b:step id="step2">
+			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
+				<bean parent="shellTasklet">
+					<property name="command" value="ls" />
+					<property name="arguments">
+						<list>
+							<value>-lash</value>
+							<value>/</value>
+						</list>
+					</property>
+				</bean>
+			</b:tasklet>
+		</b:step>
+
+	</b:job>
+    
+
+
+</beans>
