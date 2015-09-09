@@ -81,12 +81,14 @@ remotes {
 task deploy << {
   ssh.run {
     session(remotes.role('cluster')) {
-		execute 'rm -rf HadoopSpringBatch*'
+		//execute 'rm -rf HadoopSpringBatch*'
 		put from: 'dist/HadoopSpringBatch-1.0.zip', into: 'HadoopSpringBatch-1.0.zip'
-		execute 'unzip HadoopSpringBatch-1.0.zip'
+		execute 'unzip -o HadoopSpringBatch-1.0.zip'
     }
     
   }
 }
 
 deploy.dependsOn(zip)
+
+

@@ -33,9 +33,6 @@
 		<property name="config">
 			<ref local="properties" />
 		</property>
-		<property name="arguments">
-			<list />
-		</property>
 	</bean>
 
 </beans>

@@ -19,37 +19,51 @@ public class ShellTasklet implements Tasklet {
 	private static Logger log = Logger.getLogger(ShellTasklet.class);
 
 	public String command;
+	public String script;
 	public List<String> arguments;
 	public Properties config;
 
 	public RepeatStatus execute(StepContribution contribution,
 			ChunkContext chunkContext) throws Exception {
-		
+
 		log.info("=================================");
 		log.info("|         ShellTasklet          |");
 		log.info("=================================");
-//		log.info("StepContribution: " + contribution);
-//		log.info("ChunkContext: " + chunkContext);
-//		log.info("Command: " + command);
-//		log.info("Arguments: " + arguments);
-//		log.info(config);
-		
-		
-		if(command == null) {
+
+		if (command == null || command.isEmpty()) {
 			throw new UnexpectedJobExecutionException(
 					"No command is given to the ShellTasklet to execute");
 		}
+		
+		if(arguments == null)
+			arguments = new ArrayList<>();
+		
 
 		arguments.add(0, command);
-		log.info("Executing: " + arguments);
+		if(script != null && !script.isEmpty())
+			arguments.add(1, script);
 		
-		
+
 		ProcessBuilder ps = new ProcessBuilder(
 				arguments.toArray(new String[arguments.size()]));
 		ps.redirectErrorStream(true);
-		for(String key : config.stringPropertyNames())
-			ps.environment().put("env." + key, config.getProperty(key));
-
+		
+		
+		Properties sysProps = System.getProperties();
+		if(command.equalsIgnoreCase("pig")) {
+			for (String key : config.stringPropertyNames())
+				arguments.add(2, String.format("-param %s=%s", key, config.getProperty(key)));
+			for (String key : sysProps.stringPropertyNames())
+				arguments.add(2, String.format("-param %s=%s", key, sysProps.getProperty(key)));
+			
+		} else {
+			for (String key : config.stringPropertyNames())
+				ps.environment().put(key, config.getProperty(key));
+			for (String key : sysProps.stringPropertyNames())
+				ps.environment().put(key, sysProps.getProperty(key));
+		}
+		
+		log.info("Executing: " + arguments);
 		Process pr = ps.start();
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(
 				pr.getInputStream()))) {
@@ -60,8 +74,10 @@ public class ShellTasklet implements Tasklet {
 			}
 			int code = pr.waitFor();
 			if (code != 0) {
-				throw new UnexpectedJobExecutionException(
-						"Script terminated with error code " + code);
+				String msg = "!!!ERROR: Script terminated with error code "
+						+ code;
+				log.error(msg);
+				throw new UnexpectedJobExecutionException(msg);
 			}
 
 			return RepeatStatus.FINISHED;
@@ -93,6 +109,13 @@ public class ShellTasklet implements Tasklet {
 		this.config = config;
 	}
 
-	
+	public String getScript() {
+		return script;
+	}
+
+	public void setScript(String script) {
+		this.script = script;
+	}
+
 	
 }

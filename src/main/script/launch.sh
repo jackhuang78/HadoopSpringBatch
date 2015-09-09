@@ -23,4 +23,4 @@ echo "Params:    $params"
 
 echo "Launching job..."
 echo
-java -cp "$classpath" $launcher $config $job $params
+java -cp "$classpath" -Dhome=$home $launcher $config $job $params
