@@ -30,9 +30,13 @@
 
 	<util:properties id="properties" location="classpath:env.properties" />
 	<bean name="shellTasklet" class="idv.jhuang78.hsb.ShellTasklet">
-		<property name="config">
+		<!-- <property name="config">
 			<ref local="properties" />
-		</property>
+		</property> -->
+	</bean>
+	<bean name="pigTasklet" class="idv.jhuang78.hsb.PigTasklet">
+	</bean>
+	<bean name="hiveTasklet" class="idv.jhuang78.hsb.HiveTasklet">
 	</bean>
 
 </beans>

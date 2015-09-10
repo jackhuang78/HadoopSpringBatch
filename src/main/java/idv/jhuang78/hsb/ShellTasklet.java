@@ -29,6 +29,10 @@ public class ShellTasklet implements Tasklet {
 		log.info("=================================");
 		log.info("|         ShellTasklet          |");
 		log.info("=================================");
+		
+		System.out.println(contribution);
+		System.out.println(chunkContext);
+		
 
 		if (command == null || command.isEmpty()) {
 			throw new UnexpectedJobExecutionException(
@@ -50,7 +54,10 @@ public class ShellTasklet implements Tasklet {
 		
 		
 		Properties sysProps = System.getProperties();
-		if(command.equalsIgnoreCase("pig")) {
+		for (String key : sysProps.stringPropertyNames())
+			ps.environment().put(key, sysProps.getProperty(key));
+		
+		/*if(command.equalsIgnoreCase("pig")) {
 			for (String key : config.stringPropertyNames())
 				arguments.add(2, String.format("-param %s=%s", key, config.getProperty(key)));
 			for (String key : sysProps.stringPropertyNames())
@@ -61,7 +68,7 @@ public class ShellTasklet implements Tasklet {
 				ps.environment().put(key, config.getProperty(key));
 			for (String key : sysProps.stringPropertyNames())
 				ps.environment().put(key, sysProps.getProperty(key));
-		}
+		}*/
 		
 		log.info("Executing: " + arguments);
 		Process pr = ps.start();

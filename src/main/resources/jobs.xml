@@ -34,17 +34,35 @@
 					<property name="script" value="${home}/script/generate_data.sh" />
 					<property name="arguments">
 						<list>
-							<value>${home}/${data}/${input}</value>
+							<value>${data}/input</value>
 						</list>
 					</property>
 				</bean>
 			</b:tasklet>
 		</b:step>
-		<b:step id="step2" next="">
+		<b:step id="step2" next="step3">
 			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
-				<bean parent="shellTasklet">
-					<property name="command" value="pig" />
+				<bean parent="pigTasklet">
 					<property name="script" value="${home}/script/sum.pig" />
+					<property name="params">
+						<map>
+							<entry key="input" value="${data}/input" />
+							<entry key="output" value="${data}/output" />
+						</map>
+					</property>
+				</bean>
+			</b:tasklet>
+		</b:step>
+		<b:step id="step3" next="">
+			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
+				<bean parent="hiveTasklet">
+					<property name="script" value="${home}/script/extract.hql" />
+					<property name="params">
+						<map>
+							<entry key="input" value="${data}/output" />
+							<entry key="output" value="${data}/extracted" />
+						</map>
+					</property>
 				</bean>
 			</b:tasklet>
 		</b:step>
