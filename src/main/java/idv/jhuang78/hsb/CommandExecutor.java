@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 public class CommandExecutor {
 	private static Logger log = Logger.getLogger(CommandExecutor.class);
 	
-	public int execute(String command, List<String> arguments) throws Exception  {
+	public int execute(String name, String command, List<String> arguments) throws Exception  {
 		
 		List<String> cmd = new ArrayList<>(arguments);
 		cmd.add(0,  command);
@@ -31,7 +31,7 @@ public class CommandExecutor {
 
 			String line;
 			while ((line = in.readLine()) != null) {
-				log.info("\t| " + line);
+				log.info("\t" + name + " | " + line);
 			}
 			int code = pr.waitFor();
 			return code;

@@ -35,10 +35,10 @@ public class HiveTasklet implements Tasklet {
 					"No script is given to the HiveTasklet to execute");
 		}
 		
+		String stepName = context.getStepContext().getStepName();
 		Properties sysProps = System.getProperties();
 		String paramFile = String.format("%s/hive_param_%s.ini", 
-				sysProps.getProperty("tmp"), 
-				context.getStepContext().getStepName());
+				sysProps.getProperty("tmp"), stepName);
 		if(params == null) {
 			params = new HashMap<>();
 		}
@@ -53,7 +53,7 @@ public class HiveTasklet implements Tasklet {
 		
 		log.info(String.format("Generating parameter file at %s", paramFile));
 		
-		int ret = new CommandExecutor().execute("hive", Arrays.asList("-i", paramFile, "-f", script));
+		int ret = new CommandExecutor().execute(stepName, "hive", Arrays.asList("-i", paramFile, "-f", script));
 		if(ret != 0)
 			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
 		

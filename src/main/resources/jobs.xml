@@ -61,7 +61,7 @@
 
 	<!-- Job1 Job -->
 	<b:job id="job1">
-		<b:step id="generate_id" next="">
+		<b:step id="generate_id" next="split1">
 			<b:tasklet>
 				<bean parent="pigTasklet">
 					<property name="script" value="${home}/script/job1/generate_id.pig" />
@@ -74,7 +74,7 @@
 			</b:tasklet>
 		</b:step>
 
-		<!-- <b:split id="split1" task-executor="asyncTaskExecutor" next="">
+		<b:split id="split1" task-executor="asyncTaskExecutor" next="">
 			<b:flow>
 				<b:step id="sum" next="">
 					<b:tasklet>
@@ -103,7 +103,7 @@
 					</b:tasklet>
 				</b:step>
 			</b:flow>
-		</b:split> -->
+		</b:split>
 	</b:job>
 
 		

@@ -34,10 +34,10 @@ public class PigTasklet implements Tasklet {
 					"No script is given to the PigTasklet to execute");
 		}
 		
+		String stepName = context.getStepContext().getStepName();
 		Properties sysProps = System.getProperties();
 		String paramFile = String.format("%s/pig_param_%s.properties", 
-				sysProps.getProperty("tmp"), 
-				context.getStepContext().getStepName());
+				sysProps.getProperty("tmp"), stepName);
 		if(params == null) {
 			params = new HashMap<>();
 		}
@@ -52,7 +52,7 @@ public class PigTasklet implements Tasklet {
 		
 		
 		
-		int ret = new CommandExecutor().execute("pig", Arrays.asList("-Dmapred.job.queue.name=" + queue, "-useHCatalog", "-m", paramFile, script));
+		int ret = new CommandExecutor().execute(stepName, "pig", Arrays.asList("-Dmapred.job.queue.name=" + queue, "-useHCatalog", "-m", paramFile, script));
 		if(ret != 0)
 			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
 		
