@@ -23,6 +23,7 @@ public class PigTasklet implements Tasklet {
 
 	public String script;
 	public Map<String, String> params;
+	public String queue;
 
 	public RepeatStatus execute(StepContribution contribution,
 			ChunkContext context) throws Exception {
@@ -54,13 +55,7 @@ public class PigTasklet implements Tasklet {
 		
 		
 		
-		int ret = 0;
-		try {
-			ret = new CommandExecutor().execute("pig", Arrays.asList("-x", "local", "-m", paramFile, script));
-		} catch(Exception e) {
-			throw new UnexpectedJobExecutionException("", e);
-		}
-		
+		int ret = new CommandExecutor().execute("pig", Arrays.asList("-Dmapred.job.queue.name=" + queue, "-useHCatalog", "-m", paramFile, script));
 		if(ret != 0)
 			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
 		
@@ -83,5 +78,12 @@ public class PigTasklet implements Tasklet {
 	public void setParams(Map<String, String> params) {
 		this.params = params;
 	}
-	
+
+	public String getQueue() {
+		return queue;
+	}
+
+	public void setQueue(String queue) {
+		this.queue = queue;
+	}
 }

@@ -32,7 +32,7 @@ public class CommandExecutor {
 
 			String line;
 			while ((line = in.readLine()) != null) {
-				log.info("\t" + line);
+				log.info("\t| " + line);
 			}
 			int code = pr.waitFor();
 			return code;

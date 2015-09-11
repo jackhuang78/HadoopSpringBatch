@@ -21,8 +21,10 @@ public class HiveTasklet implements Tasklet {
 
 	private static Logger log = Logger.getLogger(HiveTasklet.class);
 
-	public String script;
-	public Map<String, String> params;
+	private String script;
+	private Map<String, String> params;
+	private String queue;
+	private String warehouse;
 
 	public RepeatStatus execute(StepContribution contribution,
 			ChunkContext context) throws Exception {
@@ -45,6 +47,8 @@ public class HiveTasklet implements Tasklet {
 		}
 		try(PrintWriter out = new PrintWriter(new File(paramFile))) {
 			out.println("-- autogen");
+			out.println(String.format("SET mapred.job.queue.name=%s;", queue));
+			out.println(String.format("SET hive.metastore.warehouse.dir=%s;", warehouse));
 			for(String key : params.keySet()) {
 				out.println(String.format("SET %s=%s;", key, params.get(key)));
 			}
@@ -52,13 +56,7 @@ public class HiveTasklet implements Tasklet {
 		
 		log.info(String.format("Generating parameter file at %s", paramFile));
 		
-		int ret = 0;
-		try {
-			ret = new CommandExecutor().execute("hive", Arrays.asList("-i", paramFile, "-f", script));
-		} catch(Exception e) {
-			throw new UnexpectedJobExecutionException("", e);
-		}
-		
+		int ret = new CommandExecutor().execute("hive", Arrays.asList("-i", paramFile, "-f", script));
 		if(ret != 0)
 			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
 		
@@ -83,5 +81,20 @@ public class HiveTasklet implements Tasklet {
 	public void setParams(Map<String, String> params) {
 		this.params = params;
 	}
+
+	public String getQueue() {
+		return queue;
+	}
+
+	public void setQueue(String queue) {
+		this.queue = queue;
+	}
 	
+	public String getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(String warehouse) {
+		this.warehouse = warehouse;
+	}
 }

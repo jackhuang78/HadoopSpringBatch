@@ -11,14 +11,14 @@
 		
 	<b:job id="test">
 		<b:step id="test1" next="test2">
-			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
+			<b:tasklet>
 				<bean parent="shellTasklet">
 					<property name="command" value="pwd" />
 				</bean>
 			</b:tasklet>
 		</b:step>
 		<b:step id="test2" next="">
-			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
+			<b:tasklet>
 				<bean parent="shellTasklet">
 					<property name="command" value="printenv" />
 				</bean>
@@ -26,12 +26,12 @@
 		</b:step>
 	</b:job>
 	
-	<b:job id="job1">
-		<b:step id="step1" next="step2">
-			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
+	<b:job id="setup">
+		<b:step id="generate_input" next="create_tables">
+			<b:tasklet>
 				<bean parent="shellTasklet">
 					<property name="command" value="sh" />
-					<property name="script" value="${home}/script/generate_data.sh" />
+					<property name="script" value="${home}/script/setup/generate_input.sh" />
 					<property name="arguments">
 						<list>
 							<value>${data}/input</value>
@@ -40,27 +40,31 @@
 				</bean>
 			</b:tasklet>
 		</b:step>
-		<b:step id="step2" next="step3">
-			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
-				<bean parent="pigTasklet">
-					<property name="script" value="${home}/script/sum.pig" />
+		<b:step id="create_tables" next="">
+			<b:tasklet>
+				<bean parent="hiveTasklet">
+					<property name="script" value="${home}/script/setup/create_tables.hql" />
 					<property name="params">
 						<map>
-							<entry key="input" value="${data}/input" />
-							<entry key="output" value="${data}/output" />
+							<entry key="db" value="${hive.db}" />
+							<entry key="input_ext" value="${data}/input" />
 						</map>
 					</property>
 				</bean>
 			</b:tasklet>
 		</b:step>
-		<b:step id="step3" next="">
-			<b:tasklet xmlns="http://www.springframework.org/schema/beans">
-				<bean parent="hiveTasklet">
-					<property name="script" value="${home}/script/extract.hql" />
+	</b:job>
+
+	<b:job id="job1">
+		<b:step id="sum" next="">
+			<b:tasklet>
+				<bean parent="pigTasklet">
+					<property name="script" value="${home}/script/job1/sum.pig" />
 					<property name="params">
 						<map>
-							<entry key="input" value="${data}/output" />
-							<entry key="output" value="${data}/extracted" />
+							<entry key="udf" value="${home}/script/job1/udf.py" />
+							<entry key="warehouse" value="${hive.warehouse}/${hive.db}.db" />
+							<entry key="db" value="${hive.db}" />
 						</map>
 					</property>
 				</bean>

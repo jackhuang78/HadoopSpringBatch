@@ -73,9 +73,9 @@ zip.dependsOn(build)
 remotes {
   mapr {
     role 'cluster'
-    host = '192.168.192.128'
-    user = 'mapr'
-    password = 'mapr'
+    host = myhost //'192.168.192.128'
+    user = myusername //'mapr'
+    password = mypassword //'mapr'
   }
 }
 

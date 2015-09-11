@@ -39,13 +39,7 @@ public class ShellTasklet implements Tasklet {
 		if(script != null && !script.isEmpty())
 			arguments.add(0, script);
 		
-		int ret = 0;
-		try {
-			ret = new CommandExecutor().execute(command, arguments);
-		} catch(Exception e) {
-			throw new UnexpectedJobExecutionException("", e);
-		}
-		
+		int ret = new CommandExecutor().execute(command, arguments);
 		if(ret != 0)
 			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
 		

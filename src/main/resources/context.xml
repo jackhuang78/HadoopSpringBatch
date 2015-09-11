@@ -35,8 +35,11 @@
 		</property> -->
 	</bean>
 	<bean name="pigTasklet" class="idv.jhuang78.hsb.PigTasklet">
+		<property name="queue" value="${hadoop.queue}" />
 	</bean>
 	<bean name="hiveTasklet" class="idv.jhuang78.hsb.HiveTasklet">
+		<property name="queue" value="${hadoop.queue}" />
+		<property name="warehouse" value="${hive.warehouse}" />
 	</bean>
 
 </beans>
