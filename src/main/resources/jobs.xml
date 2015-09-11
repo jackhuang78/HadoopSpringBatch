@@ -9,6 +9,7 @@
 
 	<import resource="context.xml"/>
 		
+	<!-- Test Job -->
 	<b:job id="test">
 		<b:step id="test1" next="test2">
 			<b:tasklet>
@@ -26,6 +27,7 @@
 		</b:step>
 	</b:job>
 	
+	<!-- Setup Job -->
 	<b:job id="setup">
 		<b:step id="generate_input" next="create_tables">
 			<b:tasklet>
@@ -40,37 +42,71 @@
 				</bean>
 			</b:tasklet>
 		</b:step>
+
 		<b:step id="create_tables" next="">
 			<b:tasklet>
 				<bean parent="hiveTasklet">
 					<property name="script" value="${home}/script/setup/create_tables.hql" />
 					<property name="params">
-						<map>
-							<entry key="db" value="${hive.db}" />
+						<map merge="true">
 							<entry key="input_ext" value="${data}/input" />
 						</map>
 					</property>
 				</bean>
 			</b:tasklet>
 		</b:step>
+
 	</b:job>
 
+
+	<!-- Job1 Job -->
 	<b:job id="job1">
-		<b:step id="sum" next="">
+		<b:step id="generate_id" next="">
 			<b:tasklet>
 				<bean parent="pigTasklet">
-					<property name="script" value="${home}/script/job1/sum.pig" />
+					<property name="script" value="${home}/script/job1/generate_id.pig" />
 					<property name="params">
-						<map>
+						<map merge="true">
 							<entry key="udf" value="${home}/script/job1/udf.py" />
-							<entry key="warehouse" value="${hive.warehouse}/${hive.db}.db" />
-							<entry key="db" value="${hive.db}" />
 						</map>
 					</property>
 				</bean>
 			</b:tasklet>
 		</b:step>
+
+		<!-- <b:split id="split1" task-executor="asyncTaskExecutor" next="">
+			<b:flow>
+				<b:step id="sum" next="">
+					<b:tasklet>
+						<bean parent="pigTasklet">
+							<property name="script" value="${home}/script/job1/sum.pig" />
+							<property name="params">
+								<map merge="true">
+									<entry key="udf" value="${home}/script/job1/udf.py" />
+								</map>
+							</property>
+						</bean>
+					</b:tasklet>
+				</b:step>
+			</b:flow>
+			<b:flow>
+				<b:step id="product" next="">
+					<b:tasklet>
+						<bean parent="pigTasklet">
+							<property name="script" value="${home}/script/job1/product.pig" />
+							<property name="params">
+								<map merge="true">
+									<entry key="udf" value="${home}/script/job1/udf.py" />
+								</map>
+							</property>
+						</bean>
+					</b:tasklet>
+				</b:step>
+			</b:flow>
+		</b:split> -->
 	</b:job>
+
+		
 		
 
 

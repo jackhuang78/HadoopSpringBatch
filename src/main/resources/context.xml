@@ -28,6 +28,9 @@
 		<property name="jobRepository" ref="jobRepository" />
 	</bean>
 
+	<bean id="asyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+
+
 	<util:properties id="properties" location="classpath:env.properties" />
 	<bean name="shellTasklet" class="idv.jhuang78.hsb.ShellTasklet">
 		<!-- <property name="config">
@@ -36,10 +39,22 @@
 	</bean>
 	<bean name="pigTasklet" class="idv.jhuang78.hsb.PigTasklet">
 		<property name="queue" value="${hadoop.queue}" />
+		<property name="params">
+			<map>
+				<entry key="warehouse" value="${hive.warehouse}/${hive.db}.db" />
+				<entry key="db" value="${hive.db}" />
+				<entry key="hcat" value="${home}/script/job1/hcat.pig" />
+			</map>
+		</property>
 	</bean>
 	<bean name="hiveTasklet" class="idv.jhuang78.hsb.HiveTasklet">
 		<property name="queue" value="${hadoop.queue}" />
 		<property name="warehouse" value="${hive.warehouse}" />
+		<property name="params">
+			<map>
+				<entry key="db" value="${hive.db}" />
+			</map>
+		</property>
 	</bean>
 
 </beans>

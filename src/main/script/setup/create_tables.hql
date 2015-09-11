@@ -10,9 +10,20 @@ CREATE TABLE IF NOT EXISTS input(
 	f3 INT  
 );
 
-CREATE TABLE IF NOT EXISTS output(
+CREATE TABLE IF NOT EXISTS data_with_id(
+  id STRING ,
+  f1 INT ,
+  f2 INT ,
+  f3 INT 
+);
+
+CREATE TABLE IF NOT EXISTS sum(
 	id STRING,
-	total INT
+	sum INT
+);
+CREATE TABLE IF NOT EXISTS product(
+  id STRING,
+  product INT
 );
 
 
