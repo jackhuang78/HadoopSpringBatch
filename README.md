@@ -1,5 +1,26 @@
 # HadoopSpringBatch
-A SpringBatch setup for developing workflow on Hadoop clusters. 
+A workflow engine for Hadoop, powered by Spring Batch.
+
+## Features
+- Workflow with Pig/Hive scripts or generic shell commands.
+- Parameter management.
+- Sequential or parallel script executions.
+- Easy setup for Java/Python UDFs. 
+
+
+## Installation
+1. [Download](https://github.com/jhuang78/HadoopSpringBatch/archive/master.zip) and unzip the repository.
+2. Edit `gradle.properties` to set the host IP and your username/password to the cluster.
+3. Execute `gradle deploy` to both build and deploy the code to the Hadoop cluster.
+4. SSH into the cluster and CD into the unzipped project directory.
+5. Run the setup workflow with `script/launch.sh jobs.xml setup`
+6. Run the workflow with `script/launch.sh jobs.xml job1`
+
+
+
+
+
+
 
 ## Motivation
 When processing data on Hadoop cluster, it is often more managable to break down a big process into smaller steps. This is even more the case in a team setup, where the flow of data from one step to the next must be clearly defined. This project aims to provide an intuitive way of developers to define a workflow on Hadoop cluster. In particular:
