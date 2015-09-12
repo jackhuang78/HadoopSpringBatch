@@ -28,11 +28,15 @@ To run the example workflow, you will need the following installed on your Hadoo
 		hsb_username=<username>
 		hsb_password=<password>
 
-3. Execute `gradle deploy` to both build and deploy the code to the cluster.
-4. SSH into the cluster and CD into the unzipped project directory.
-5. Run the setup workflow with `script/launch.sh jobs.xml setup`
-6. Run the process workflow with `script/launch.sh jobs.xml job1`
-7. Look at `src/resources/jobs.xml` to see the workflow setup.
+3. Set your Hadoop queue name in `src/main/resources/env.properties`.
+
+		hadoop.queue=MY_QUEUE
+
+4. Execute `gradle deploy` to both build and deploy the code to the cluster.
+5. SSH into the cluster and CD into the unzipped project directory.
+6. Run the setup workflow with `script/launch.sh jobs.xml setup`
+7. Run the process workflow with `script/launch.sh jobs.xml job1`
+8. Look at `src/resources/jobs.xml` to see the workflow setup.
 
 ## Contact
 Jack Huang (jack.huang78@gmail.com)
