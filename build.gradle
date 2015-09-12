@@ -41,17 +41,22 @@ uploadArchives {
 task copyLib(type: Copy) {
 	from configurations.runtime
 	into "$buildDir/libs"
+	
+	from "lib"
+	into "$buildDir/libs"
 }
 
 task copySrc(type: Copy) {
 	from "src/main/script" 
 	fileMode 0755
 	into "$buildDir/script"
+	
+
 }
 
 task zip(type:Zip) {
 	from("$buildDir/libs") {
-		into 'libs'
+		into 'lib'
 	}
 	from("$buildDir/script") {
 		into 'script'

@@ -11,17 +11,11 @@
 		
 	<!-- Test Job -->
 	<b:job id="test">
-		<b:step id="test1" next="test2">
+		<b:step id="test1" next="">
 			<b:tasklet>
 				<bean parent="shellTasklet">
-					<property name="command" value="pwd" />
-				</bean>
-			</b:tasklet>
-		</b:step>
-		<b:step id="test2" next="">
-			<b:tasklet>
-				<bean parent="shellTasklet">
-					<property name="command" value="printenv" />
+					<property name="command" value="python" />
+					<property name="script" value="${home}/script/common/csv.py" />
 				</bean>
 			</b:tasklet>
 		</b:step>
