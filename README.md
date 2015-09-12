@@ -30,7 +30,7 @@ To run the example workflow, you will need the following installed on your Hadoo
 
 3. Set your Hadoop queue name in `src/main/resources/env.properties`.
 
-		hadoop.queue=MY_QUEUE
+		hadoop.queue=<my_queue>
 
 4. Execute `gradle deploy` to both build and deploy the code to the cluster.
 5. SSH into the cluster and CD into the unzipped project directory.

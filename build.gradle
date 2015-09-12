@@ -50,9 +50,12 @@ task copySrc(type: Copy) {
 	from "src/main/script" 
 	fileMode 0755
 	into "$buildDir/script"
-	
-
 }
+
+task pipInstall(type: Exec) {
+  commandLine 'pip', 'install', '-r', 'requirements.txt', '-d', "$buildDir/libs"
+}
+
 
 task zip(type:Zip) {
 	from("$buildDir/libs") {
@@ -72,8 +75,11 @@ task zip(type:Zip) {
 
 build.dependsOn(copyLib)
 build.dependsOn(copySrc)
+build.dependsOn(pipInstall)
 
 zip.dependsOn(build)
+
+
 
 remotes {
   mapr {
