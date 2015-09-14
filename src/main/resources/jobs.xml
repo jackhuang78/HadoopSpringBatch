@@ -34,7 +34,7 @@
 						<list>
 							<value>sh</value>
 							<value>${home}/script/setup/generate_input.sh</value>
-							<value>${data}/input</value>
+							<value>${home}/${data}/input</value>
 						</list>
 					</property>
 				</bean>
@@ -47,7 +47,7 @@
 					<property name="script" value="${home}/script/setup/create_tables.hql" />
 					<property name="params">
 						<map merge="true">
-							<entry key="input_ext" value="${data}/input" />
+							<entry key="input_ext" value="${home}/${data}/input" />
 						</map>
 					</property>
 				</bean>
