@@ -52,7 +52,13 @@ public class PigTasklet implements Tasklet {
 		
 		
 		
-		int ret = new CommandExecutor().execute(stepName, "pig", Arrays.asList("-Dmapred.job.queue.name=" + queue, "-useHCatalog", "-m", paramFile, script));
+		int ret = new CommandExecutor().execute(stepName,
+				"pig", 
+				"-Dmapred.job.queue.name=" + queue, 
+				"-useHCatalog", 
+				"-m", paramFile, 
+				script);
+		
 		if(ret != 0)
 			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
 		

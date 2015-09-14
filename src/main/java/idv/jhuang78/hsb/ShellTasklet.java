@@ -1,6 +1,6 @@
 package idv.jhuang78.hsb;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,9 +14,7 @@ public class ShellTasklet implements Tasklet {
 
 	protected static Logger log = Logger.getLogger(ShellTasklet.class);
 
-	public String command;
-	public String script;
-	public List<String> arguments;
+	public List<String> commands;
 
 	public RepeatStatus execute(StepContribution contribution,
 			ChunkContext context) throws Exception {
@@ -30,18 +28,8 @@ public class ShellTasklet implements Tasklet {
 		
 		String stepName = context.getStepContext().getStepName();
 
-		if (command == null || command.isEmpty()) {
-			throw new UnexpectedJobExecutionException(
-					"No command is given to the ShellTasklet to execute");
-		}
 		
-		if(arguments == null)
-			arguments = new ArrayList<>();
-		
-		if(script != null && !script.isEmpty())
-			arguments.add(0, script);
-		
-		int ret = new CommandExecutor().execute(stepName, command, arguments);
+		int ret = new CommandExecutor().execute(stepName, commands.toArray(new String[commands.size()]));
 		if(ret != 0)
 			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
 		
@@ -49,29 +37,14 @@ public class ShellTasklet implements Tasklet {
 
 	}
 
-	public String getCommand() {
-		return command;
+	public List<String> getCommands() {
+		return commands;
 	}
 
-	public void setCommand(String command) {
-		this.command = command;
+	public void setCommands(List<String> commands) {
+		this.commands = commands;
 	}
 
-	public List<String> getArguments() {
-		return arguments;
-	}
-
-	public void setArguments(List<String> arguments) {
-		this.arguments = arguments;
-	}
-
-	public String getScript() {
-		return script;
-	}
-
-	public void setScript(String script) {
-		this.script = script;
-	}
 
 	
 }

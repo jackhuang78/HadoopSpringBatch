@@ -7,3 +7,4 @@ build
 dist
 *.log
 gradle.properties
+src/main/resources/env.properties
