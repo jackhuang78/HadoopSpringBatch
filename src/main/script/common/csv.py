@@ -6,7 +6,7 @@ if 'pylib' in os.environ:
 	sys.path.append('%s' % os.environ['pylib'])
 
 # import libraries
-import argparse
+import argparse, errno
 
 # parse arguments
 parser = argparse.ArgumentParser(description='Change a formatted file\'s delimiter.')
@@ -34,7 +34,6 @@ if args.toDelim in delimMap:
 # pair up input and output files
 files = []
 for f in args.files:
-	
 	if not os.path.isdir(f):
 		# input is a file, it is to be converted to a output ifle
 		files.append(([f], f + args.outSuf))
@@ -48,10 +47,18 @@ for f in args.files:
 			# each child files goes to its own output
 			for ff in parts:
 				files.append(([ff], ff + args.outSuf))
+files = map(lambda (fromFiles, toFile): (fromFiles, os.path.join(args.outDir, os.path.basename(toFile))), files)
+
+try:
+	os.mkdir(args.outDir)
+except OSError as e:
+	if e.errno != errno.EEXIST:
+		raise e
+	pass
 
 # convert input file to output file
 for fromFiles, toFile in files:
-	print fromFiles, '->', toFile
+	print 'converting: ', fromFiles, '->', toFile
 	with open(toFile, 'w') as outfile:
 		for fromFile in fromFiles:
 			i = 0

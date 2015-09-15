@@ -72,7 +72,7 @@
 			</b:tasklet>
 		</b:step>
 
-		<b:split id="split1" task-executor="asyncTaskExecutor" next="">
+		<b:split id="split1" task-executor="asyncTaskExecutor" next="convert_results">
 			<b:flow>
 				<b:step id="sum" next="">
 					<b:tasklet>
@@ -102,6 +102,29 @@
 				</b:step>
 			</b:flow>
 		</b:split>
+
+		<b:step id="convert_results" next="">
+			<b:tasklet>
+				<bean parent="shellTasklet">
+					<property name="commands">
+						<list>
+							<value>python</value>
+							<value>${home}/script/common/csv.py</value>
+							<value>-d</value>
+							<value>${home}/${data}/results</value>
+							<value>-s</value>
+							<value>.tsv</value>
+							<value>-b</value>
+							<value>ctrlA</value>
+							<value>tab</value>
+							<value>${home}/${hive.warehouse}/${hive.db}.db/product</value>
+							<value>${home}/${hive.warehouse}/${hive.db}.db/sum</value>
+						</list>
+					</property>
+				</bean>
+			</b:tasklet>
+		</b:step>
+
 	</b:job>
 
 		

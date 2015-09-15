@@ -32,6 +32,10 @@
 
 
 	<util:properties id="properties" location="classpath:env.properties" />
+
+	<util:map id="taskletConfig">
+	</util:map>
+
 	<bean name="shellTasklet" class="idv.jhuang78.hsb.ShellTasklet">
 		<!-- <property name="config">
 			<ref local="properties" />
