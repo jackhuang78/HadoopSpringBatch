@@ -51,54 +51,6 @@ public class PigTasklet extends AbstractTasklet {
 		
 	}
 
-	/*public RepeatStatus execute(StepContribution contribution,
-			ChunkContext context) throws Exception {
-
-		log.info("=================================");
-		log.info("|         PigTasklet            |");
-		log.info("=================================");
-		String stepName = context.getStepContext().getStepName();
-		if(new CommandExecutor().skip(stepName, config, context)) {
-			log.info("SKIPPING STEP " + stepName);
-			return RepeatStatus.FINISHED;
-		}
-		
-		if (script == null || script.isEmpty()) {
-			throw new UnexpectedJobExecutionException(
-					"No script is given to the PigTasklet to execute");
-		}
-		
-		
-		Properties sysProps = System.getProperties();
-		String paramFile = String.format("%s/pig_param_%s.properties", 
-				sysProps.getProperty("tmp"), stepName);
-		if(params == null) {
-			params = new HashMap<>();
-		}
-		try(PrintWriter out = new PrintWriter(new File(paramFile))) {
-			out.println("# autogen");
-			for(String key : params.keySet()) {
-				out.println(String.format("%s=%s", key, params.get(key)));
-			}
-		}
-		
-		log.info(String.format("Generating parameter file at %s", paramFile));
-		
-		
-		
-		int ret = new CommandExecutor().execute(stepName,
-				"pig", 
-				"-Dmapred.job.queue.name=" + queue, 
-				"-useHCatalog", 
-				"-m", paramFile, 
-				script);
-		
-		if(ret != 0)
-			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
-		
-		return RepeatStatus.FINISHED;
-				
-	}*/
 
 	public String getScript() {
 		return script;

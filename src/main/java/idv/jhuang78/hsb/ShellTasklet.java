@@ -29,46 +29,5 @@ public class ShellTasklet extends AbstractTasklet {
 	public void setCommands(List<String> commands) {
 		this.commands = commands;
 	}
-	/*
-	public RepeatStatus execute(StepContribution contribution,
-			ChunkContext context) throws Exception {
-
-		log.info("=================================");
-		log.info("|         ShellTasklet          |");
-		log.info("=================================");
-		String stepName = context.getStepContext().getStepName();
-		if(new CommandExecutor().skip(stepName, config, context)) {
-			log.warn("SKIPPING STEP " + stepName);
-			return RepeatStatus.FINISHED;
-		}
-				
-//		System.out.println(contribution);
-//		System.out.println(context);
-//		
-		
-
-		
-		int ret = new CommandExecutor().execute(stepName, commands.toArray(new String[commands.size()]));
-		if(ret != 0)
-			throw new UnexpectedJobExecutionException("Script terminated with code " + ret);
-		
-		return RepeatStatus.FINISHED;
-
-	}
-
-
-
-	public Map<String, String> getConfig() {
-		return config;
-	}
-
-	public void setConfig(Map<String, String> config) {
-		this.config = config;
-	}*/
-
-	
-
-
-
 	
 }

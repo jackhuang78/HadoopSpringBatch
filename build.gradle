@@ -24,6 +24,8 @@ dependencies {
  
     compile 'org.springframework.batch:spring-batch-core:3.0.5.RELEASE'
     compile 'log4j:log4j:1.2.17'
+    compile 'org.datanucleus:datanucleus-api-jdo:4.2.0-m3'
+
 }
 
 test {
@@ -100,5 +102,8 @@ task deploy << {
 }
 deploy.dependsOn(zip)
 
-
+task sync(type:Exec) {
+  commandLine 'sh', '-c', "sshpass -e rsync -ruh --progress --exclude=.DS_Store src/main/* ${hsb_username}@${hsb_host}:${hsb_dest}"
+  //commandLine 'sh', '-c', 'ls *.properties'
+}
 
