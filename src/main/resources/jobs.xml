@@ -103,7 +103,7 @@
 			</b:flow>
 		</b:split>
 
-		<b:step id="convert_results" next="">
+		<b:step id="convert_results" next="desc">
 			<b:tasklet>
 				<bean parent="shellTasklet">
 					<property name="commands">
@@ -121,6 +121,14 @@
 							<value>${home}/${hive.warehouse}/${hive.db}.db/sum</value>
 						</list>
 					</property>
+				</bean>
+			</b:tasklet>
+		</b:step>
+
+		<b:step id="desc" next="">
+			<b:tasklet>
+				<bean parent="sparkTasklet">
+					<property name="script" value="${home}/script/job1/desc.scala" />
 				</bean>
 			</b:tasklet>
 		</b:step>

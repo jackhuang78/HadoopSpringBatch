@@ -3,11 +3,13 @@ package idv.jhuang78.hsb;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Scanner;
 
 import javax.annotation.Resource;
 
@@ -26,6 +28,9 @@ public abstract class AbstractTasklet  implements Tasklet {
 	
 	
 	abstract protected String[] getCmd(StepContribution contribution, ChunkContext context) throws Exception;
+	protected InputStream getStdin() {
+		return null;
+	}
 	
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext context) throws Exception {
@@ -34,7 +39,6 @@ public abstract class AbstractTasklet  implements Tasklet {
 		log.info("=====================================================");
 		log.info("|         " + this.getClass().getSimpleName() + ": " + name);
 		log.info("=====================================================");
-		
 		
 		
 		String startAt = (String) context.getStepContext().getJobParameters().get("startAt");
@@ -71,8 +75,27 @@ public abstract class AbstractTasklet  implements Tasklet {
 		}
 		
 		log.info("Executing: " + Arrays.toString(commands));
-		Process pr = ps.start();
+		final Process pr = ps.start();
 		int code = 0;
+		
+		final InputStream stdin = getStdin();
+		if(stdin != null) {
+			new Thread(){
+				public void run() {
+					
+					Scanner in = new Scanner(stdin);
+					PrintWriter out = new PrintWriter(pr.getOutputStream());
+					while(in.hasNextLine()) {
+						String line = in.nextLine();
+						//log.info(">> " + line);
+						out.println(line);
+					}
+					in.close();
+					out.close();	
+				}
+			}.run();
+		}
+		
 		try(BufferedReader in = new BufferedReader(new InputStreamReader(
 				pr.getInputStream()))) {
 

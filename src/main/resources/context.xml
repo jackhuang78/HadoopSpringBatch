@@ -60,5 +60,12 @@
 			</map>
 		</property>
 	</bean>
+	<bean name="sparkTasklet" class="idv.jhuang78.hsb.SparkTasklet">
+		<property name="params">
+			<map>
+				<entry key="db" value="${hive.db}" />
+			</map>
+		</property>
+	</bean>
 
 </beans>
