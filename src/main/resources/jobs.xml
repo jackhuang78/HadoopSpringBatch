@@ -129,6 +129,12 @@
 			<b:tasklet>
 				<bean parent="sparkTasklet">
 					<property name="script" value="${home}/script/job1/desc.scala" />
+					<property name="params">
+						<map merge="true">
+							<entry key="inputFile" value="${home}/${data}/input" />
+							<entry key="outputFile" value="${home}/${data}/sparkOutput" />
+						</map>
+					</property>
 				</bean>
 			</b:tasklet>
 		</b:step>

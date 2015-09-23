@@ -36,18 +36,19 @@ public class SparkTasklet extends AbstractTasklet {
 			params = new HashMap<>();
 		}
 		try(PrintWriter out = new PrintWriter(new File(paramFile))) {
-//			out.println("-- autogen");
-//			out.println(String.format("SET mapred.job.queue.name=%s;", queue));
-//			out.println(String.format("SET hive.metastore.warehouse.dir=%s;", warehouse));
-//			for(String key : params.keySet()) {
-//				out.println(String.format("SET %s=%s;", key, params.get(key)));
-//			}
+			out.println("// autogen");
+			//out.println(String.format("SET mapred.job.queue.name=%s;", queue));
+			//out.println(String.format("SET hive.metastore.warehouse.dir=%s;", warehouse));
+			for(String key : params.keySet()) {
+				out.println(String.format("val %s=\"%s\";", key, params.get(key)));
+			}
 		}
 		
 		log.info(String.format("Generating parameter file at %s", paramFile));
 		
 		return new String[] { 
-			"spark-shell"
+			"spark-shell",
+			"-i", paramFile
 		};
 	}
 	
