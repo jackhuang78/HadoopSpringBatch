@@ -2,7 +2,7 @@
 A workflow engine for Hadoop, powered by Spring Batch.
 
 ## Features
-- Workflow with Pig/Hive scripts or generic shell commands.
+- Workflow with Pig/Hive/Spark scripts or generic shell commands.
 - Parameter management.
 - Sequential or parallel script executions.
 - Easy setup for Java/Python UDFs. 
@@ -17,7 +17,7 @@ To run the example workflow, you will need the following installed on your Hadoo
 - Hive
 - HCatalog
 - Python
-
+- Spark
 
 
 ## Installation
