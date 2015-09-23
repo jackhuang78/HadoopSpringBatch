@@ -35,7 +35,7 @@ To run the example workflow, you will need the following installed on your Hadoo
 4. Execute `gradle deploy` to both build and deploy the code to the cluster.
 5. SSH into the cluster and CD into the unzipped project directory.
 6. Run the setup workflow with `script/launch.sh jobs.xml setup`
-7. Run the process workflow with `script/launch.sh jobs.xml job1`
+7. Run the example workflow with `script/launch.sh jobs.xml job1`
 8. Look at `src/resources/jobs.xml` to see the workflow setup.
 
 ## Contact
