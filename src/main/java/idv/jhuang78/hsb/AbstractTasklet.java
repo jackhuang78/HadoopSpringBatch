@@ -47,7 +47,7 @@ public abstract class AbstractTasklet  implements Tasklet {
 			startAt = name;
 		if(taskletConfig.get("run") == null)
 			taskletConfig.put("run", "false");
-		//log.info(name + ", " + startAt + ", " + stopAt + ", " + config);
+		log.info(name + ", " + startAt + ", " + stopAt + ", " + taskletConfig);
 		if(name.equals(stopAt)) {
 			taskletConfig.put("run", "false");
 		} else if(name.equals(startAt)) {

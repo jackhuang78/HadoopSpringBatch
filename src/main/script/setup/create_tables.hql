@@ -1,4 +1,5 @@
 -- create database
+DROP DATABASE ${hiveconf:db} CASCADE;
 CREATE DATABASE IF NOT EXISTS ${hiveconf:db};
 USE ${hiveconf:db};
 
@@ -19,7 +20,8 @@ CREATE TABLE IF NOT EXISTS data_with_id(
 
 CREATE TABLE IF NOT EXISTS sum(
 	id STRING,
-	sum INT
+	sum INT,
+	str STRING 
 );
 CREATE TABLE IF NOT EXISTS product(
   id STRING,
